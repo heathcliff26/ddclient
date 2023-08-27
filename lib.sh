@@ -22,7 +22,9 @@ function get_ipv4 {
 }
 
 function get_ipv6 {
-    curl --ipv6 -s ipv6.icanhazip.com
+    if [ "${DUAL_STACK}" == "true" ]; then
+        curl --ipv6 -s ipv6.icanhazip.com
+    fi
 }
 
 function get_cache {

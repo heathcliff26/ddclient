@@ -3,6 +3,7 @@
 set -e
 
 basedir="$(dirname "${0}")"
+# shellcheck source=./lib.sh
 source "${basedir}/lib.sh"
 
 ###############################################################################

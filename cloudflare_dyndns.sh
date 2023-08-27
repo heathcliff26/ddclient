@@ -3,15 +3,16 @@
 set -e
 
 basedir="$(dirname "${0}")"
+# shellcheck source=./lib.sh
 source "${basedir}/lib.sh"
 
 ###############################################################################
 # Variables with default value
 CACHE_IPv6="${CACHE_IPv6:-$basedir/.cache_IPv6.txt}"
 CACHE_IPv4="${CACHE_IPv4:-$basedir/.cache_IPv4.txt}"
-# Needs to point to an instance of https://github.com/1rfsNet/Fritz-Box-Cloudflare-DynDNS
 PROXY="${PROXY:-true}"
 DEBUG="${DEBUG:-false}"
+DUAL_STACK="${DUAL_STACK:-true}"
 CONFIG_FILE="${CONFIG_FILE:-$basedir/config_cloudflare_dyndns.sh}"
 #
 ###############################################################################
@@ -23,12 +24,14 @@ DOMAINS="${DOMAINS:-}"
 DOMAINS_IPv6="${DOMAINS_IPv6:-}"
 DOMAINS_IPv4="${DOMAINS_IPv4:-}"
 PASSWORD="${PASSWORD:-}"
+# Needs to point to an instance of https://github.com/1rfsNet/Fritz-Box-Cloudflare-DynDNS
 SERVER="${SERVER:-}"
 #
 ###############################################################################
 
 if [ -e "${CONFIG_FILE}" ]; then
-	# shellcheck disable=SC1090
+	debug "Sourcing config file from \"${CONFIG_FILE}\""
+	# shellcheck source=examples/config_cloudflare_dyndns.sh
 	source "${CONFIG_FILE}"
 fi
 
@@ -55,18 +58,25 @@ oldIPv6=""
 myIPv4="$(get_ipv4)"
 oldIPv4=""
 
-debug "myIPv6 is \"${myIPv6}\""
+# shellcheck disable=SC2015
+[[ "${DUAL_STACK}" == "true" ]] && debug "myIPv6 is \"${myIPv6}\"" || debug "No Dual Stack enabled"
 debug "checking old ips"
 
 rc=0
+debug "Reading cached IPv4 \"${CACHE_IPv4}\""
 oldIPv4="$(get_cache "${CACHE_IPv4}")" || rc=$?
 [[ $rc -ne 0 ]] && echo "Failed to read old ip: ${oldIPv4}" && exit $rc
+debug "oldIPv6 is \"${oldIPv4}\""
 
-rc=0
-oldIPv6="$(get_cache "${CACHE_IPv6}")" || rc=$?
-[[ $rc -ne 0 ]] && echo "Failed to read old ip: ${oldIPv6}" && exit $rc
+oldIPv6=""
+if [ "${DUAL_STACK}" == "true" ]; then
+    rc=0
+	debug "Reading cached IPv6 \"${CACHE_IPv6}\""
+	oldIPv6="$(get_cache "${CACHE_IPv6}")" || rc=$?
+	[[ $rc -ne 0 ]] && echo "Failed to read old ip: ${oldIPv6}" && exit $rc
+	debug "oldIPv6 is \"${oldIPv6}\""
+fi
 
-debug "oldIPv6 is \"${oldIPv6}\""
 debug "checking if update is necessary"
 
 base_url="${SERVER}?cf_key=${PASSWORD}${proxy}"
@@ -110,9 +120,9 @@ if [ "${myIPv6}" != "${oldIPv6}" ] || [ "${myIPv4}" != "${oldIPv4}" ]; then
 	# shellcheck disable=SC2320
 	echo "${myIPv4}" >"${CACHE_IPv4}" || rc=$?
 	[[ $rc -ne 0 ]] && echo "Failed to save new ip: ${myIPv4}" && exit $rc
-	echo "Written IPv4 to cache"
+	echo "Written IPv4 to cache \"${CACHE_IPv4}\""
 	# shellcheck disable=SC2320
 	echo "${myIPv6}" >"${CACHE_IPv6}" || rc=$?
 	[[ $rc -ne 0 ]] && echo "Failed to save new ip: ${myIPv6}" && exit $rc
-	echo "Written IPv6 to cache"
+	echo "Written IPv6 to cache \"${CACHE_IPv6}\""
 fi

@@ -9,6 +9,8 @@ It is designed to work as a cronjob.
 
 For setting up the script, copy the [example config](examples/config_cloudflare_dyndns.sh) and set your configuration.
 
+Alternatively you can configure the script via enviroment variables.
+
 By default the script will source the config file in the same folder as the script as `config_cloudflare_dyndns.sh`.
 
 Additional config options that can be added to the config file are:
@@ -27,6 +29,19 @@ Example:
 */5 * * * * /ddclient/cloudflare_dyndns.sh
 ```
 This will run the script every 5 minutes.
+
+## Docker container
+
+You can use the image as a docker container, simply run:
+```
+docker run -d -v ./config_cloudflare_dyndns.sh:/config/config.sh ghcr.io/heathcliff26/ddclient:latest
+```
+
+You can configure the delay in minutes between updates with `DELAY`, the default is 5 minutes.
+Example for 10 minutes delay:
+```
+docker run -d -v ./config_cloudflare_dyndns.sh:/config/config.sh -e DELAY=10 ghcr.io/heathcliff26/ddclient:latest
+```
 
 ### Troubleshooting
 

@@ -5,6 +5,8 @@
 DEBUG="false"
 # Set proxy to true for all entries
 PROXY="true"
+# Use Dual Stack
+DUAL_STACK="true"
 
 # You can use multiple domains separated by ' ' in the DOMAIN variables.
 # While the are not mutually exclusive, having the same domain in multiple variables will either
