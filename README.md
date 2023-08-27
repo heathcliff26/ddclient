@@ -43,6 +43,13 @@ Example for 10 minutes delay:
 docker run -d -v ./config_cloudflare_dyndns.sh:/config/config.sh -e DELAY=10 ghcr.io/heathcliff26/ddclient:latest
 ```
 
+Additional Variables:
+```
+NODE_NAME
+BASE_DOMAIN
+```
+If both are set and `DOMAINS` is empty, `entrypoint.sh` will create the variable by combining both. Used for running the container as a Daemonset in Kubernetes.
+
 ### Troubleshooting
 
 Make sure the config file is executable.
