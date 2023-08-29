@@ -6,7 +6,7 @@
       "matchDatasources": ["docker"],
       "automerge": true,
       "ignoreTests": true,
-      "automergeType": "pr",
+      "automergeType": "branch",
       "matchUpdateTypes": ["digest"],
       "matchPackagePatterns": ["ghcr.io/heathcliff26", "docker.io/heathcliff26"]
     },
@@ -16,16 +16,8 @@
       "matchDatasources": ["github-tags"],
       "automerge": true,
       "ignoreTests": true,
-      "automergeType": "pr",
+      "automergeType": "branch",
       "matchUpdateTypes": ["minor", "patch"]
-    },
-    {
-      "description": "Auto merge Minor Patches",
-      "matchPackagePatterns": ["*"],
-      "matchUpdateTypes": ["minor", "patch"],
-      "automerge": true,
-      "ignoreTests": false,
-      "automergeType": "pr"
     },
   ]
 }
