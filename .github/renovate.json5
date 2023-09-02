@@ -16,7 +16,6 @@
     "helpers:pinGitHubActionDigests"
   ],
   "platform": "github",
-  "schedule": ["* * * * 0,6"],
   "dependencyDashboardTitle": "Renovate Dashboard 🤖",
   "suppressNotifications": ["prIgnoreNotification"],
   "ignorePaths": ["**/archive/**"],
