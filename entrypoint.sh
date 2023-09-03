@@ -19,7 +19,26 @@ if [[ -n "${NODE_NAME}"  && -n "${BASE_DOMAIN}" && -z "${DOMAINS}" ]]; then
 fi
 
 echo "Starting ddclient"
+error_count=0
 while true; do
-    /ddclient/cloudflare_dyndns.sh || echo "Failed to run cloudflare_dyndns.sh script, exited with rc=$?"
+    rc=0
+    /ddclient/cloudflare_dyndns.sh || rc=$?
+    if [ $rc -ne 0 ]; then
+        echo "Failed to run cloudflare_dyndns.sh script, exited with rc=$rc"
+        error_count
+        error_count=$((error_count+1))
+        if [ $error_count -ge 5 ]; then
+            echo "Too many failed script executions, exiting"
+            exit $rc
+        else
+            echo "error_count is at ${error_count}"
+            echo "Retrying in 5s"
+            sleep "5s"
+            continue
+        fi
+    elif [ $error_count -ne 0 ]; then
+        echo "Script was successfull, reseting error_count"
+        error_count=0
+    fi
     sleep "${DELAY}m"
 done
