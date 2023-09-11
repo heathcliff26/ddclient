@@ -25,7 +25,6 @@ while true; do
     /ddclient/cloudflare_dyndns.sh || rc=$?
     if [ $rc -ne 0 ]; then
         echo "Failed to run cloudflare_dyndns.sh script, exited with rc=$rc"
-        error_count
         error_count=$((error_count+1))
         if [ $error_count -ge 5 ]; then
             echo "Too many failed script executions, exiting"
