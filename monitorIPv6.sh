@@ -24,12 +24,12 @@ MAILTO="${MAILTO:-}"
 ###############################################################################
 
 if [ -e "${CONFIG_FILE}" ]; then
-	# shellcheck disable=SC1090
-	source "${CONFIG_FILE}"
+    # shellcheck disable=SC1090
+    source "${CONFIG_FILE}"
 fi
 
 if [ "${MAILTO}" == "" ]; then
-	error "No MAILTO configured"
+    error "No MAILTO configured"
 fi
 
 # Syntax for ULA ip
@@ -50,9 +50,9 @@ debug "oldIPv6 is \"${oldIPv6}\""
 debug "checking if update is necessary"
 
 if [ "${myIPv6}" != "${oldIPv6}" ]; then
-	echo -e "IPv6 changed from ${oldIPv6} to ${myIPv6}" | mail -s "[${HOSTNAME}] IPv6 Address changed" "$MAILTO"
-	rc=0
-	# shellcheck disable=SC2320
-	echo "${myIPv6}" >"${CACHE_IPv6}" || rc=$?
-	[[ $rc -eq 0 ]] || send_error "Failed to save new ip: ${myIPv6}" $rc
+    echo -e "IPv6 changed from ${oldIPv6} to ${myIPv6}" | mail -s "[${HOSTNAME}] IPv6 Address changed" "$MAILTO"
+    rc=0
+    # shellcheck disable=SC2320
+    echo "${myIPv6}" >"${CACHE_IPv6}" || rc=$?
+    [[ $rc -eq 0 ]] || send_error "Failed to save new ip: ${myIPv6}" $rc
 fi

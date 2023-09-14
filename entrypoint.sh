@@ -13,7 +13,7 @@ if [ "${DELAY}" -lt "1" ]; then
 fi
 
 # Create DOMAINS if running inside kubernetes
-if [[ -n "${NODE_NAME}"  && -n "${BASE_DOMAIN}" && -z "${DOMAINS}" ]]; then
+if [[ -n "${NODE_NAME}" && -n "${BASE_DOMAIN}" && -z "${DOMAINS}" ]]; then
     export DOMAINS="${NODE_NAME}.${BASE_DOMAIN}"
     echo "Set DOMAINS to \"${DOMAINS}\""
 fi
@@ -25,7 +25,7 @@ while true; do
     /ddclient/cloudflare_dyndns.sh || rc=$?
     if [ $rc -ne 0 ]; then
         echo "Failed to run cloudflare_dyndns.sh script, exited with rc=$rc"
-        error_count=$((error_count+1))
+        error_count=$((error_count + 1))
         if [ $error_count -ge 5 ]; then
             echo "Too many failed script executions, exiting"
             exit $rc
