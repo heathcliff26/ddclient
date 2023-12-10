@@ -86,7 +86,7 @@ if [ "${myIPv6}" != "${oldIPv6}" ] || [ "${myIPv4}" != "${oldIPv4}" ]; then
     if [ "${DOMAINS}" != "" ]; then
         echo "Updating domain(s) '${DOMAINS}' to '${myIPv4}' and '${myIPv6}' from '${oldIPv4}' and '${oldIPv6}'"
         response="$(curl --silent "${base_url}&domain=${DOMAINS}&ipv4=${myIPv4}&ipv6=${myIPv6}")"
-        if [ "${response}" == "Result: success" ]; then
+        if [ "${response}" == "Result: success" ] || [ "${response}" == "{\"msg\":\"Updated dyndns records\",\"success\":true}" ]; then
             echo "update successfull"
         else
             echo "Failed to update domains(s): ${DOMAINS}"
@@ -97,7 +97,7 @@ if [ "${myIPv6}" != "${oldIPv6}" ] || [ "${myIPv4}" != "${oldIPv4}" ]; then
     if [ "${DOMAINS_IPv4}" != "" ] && [ "${myIPv4}" != "${oldIPv4}" ]; then
         echo "Updating domain(s) '${DOMAINS_IPv4}' to '${myIPv4}' from '${oldIPv4}'"
         response="$(curl --silent "${base_url}&domain=${DOMAINS_IPv4}&ipv4=${myIPv4}")"
-        if [ "${response}" == "Result: success" ]; then
+        if [ "${response}" == "Result: success" ] || [ "${response}" == "{\"msg\":\"Updated dyndns records\",\"success\":true}" ]; then
             echo "update successfull"
         else
             echo "Failed to update domains(s): ${DOMAINS_IPv4}"
@@ -108,7 +108,7 @@ if [ "${myIPv6}" != "${oldIPv6}" ] || [ "${myIPv4}" != "${oldIPv4}" ]; then
     if [ "${DOMAINS_IPv6}" != "" ] && [ "${myIPv6}" != "${oldIPv6}" ]; then
         echo "Updating domain(s) '${DOMAINS_IPv6}' to '${myIPv6}' from '${oldIPv6}'"
         response="$(curl --silent "${base_url}&domain=${DOMAINS_IPv6}&ipv6=${myIPv6}")"
-        if [ "${response}" == "Result: success" ]; then
+        if [ "${response}" == "Result: success" ] || [ "${response}" == "{\"msg\":\"Updated dyndns records\",\"success\":true}" ]; then
             echo "update successfull"
         else
             echo "Failed to update domains(s): ${DOMAINS_IPv6}"
