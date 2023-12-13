@@ -1,3 +1,7 @@
+**Important notice**
+This project will be archived, as the [cloudflare-dyndns](https://github.com/heathcliff26/containers/tree/main/apps/cloudflare-dyndns) now has all the functionality covered by the scripts here,
+save checking for IPv6 updates.
+
 # ddclient for cloudflare
 
 This ddclient script is the client side https://github.com/1rfsNet/Fritz-Box-Cloudflare-DynDNS.
